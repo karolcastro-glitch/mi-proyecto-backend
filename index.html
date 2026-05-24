@@ -6,162 +6,175 @@
   <title>Reserva Mesa | Popayán</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <!-- Fuente Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['Poppins', 'sans-serif'] },
-          colors: {
-            primary: '#be1239', // Rose 700
-            secondary: '#881337', // Rose 900
-          }
-        }
-      }
-    }
-  </script>
-  
   <style>
-    body { font-family: 'Poppins', sans-serif; }
-    
-    /* Animaciones */
-    .fade-in { animation: fadeIn 0.5s ease-out; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    
-    /* Scrollbar personalizada */
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #f1f1f1; }
-    ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #be1239; }
-
-    /* Efecto hover en tarjetas */
-    .card-hover { transition: all 0.3s ease; }
-    .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
-
-    /* Fondo Hero con superposición */
-    .hero-bg {
-      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), 
-                  url('https://images.unsplash.com/photo-1517248135467-4c7edcad34b4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;
+    body { font-family: 'Segoe UI', system-ui, sans-serif; }
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), 
+                  url('https://images.unsplash.com/photo-1517248135467-4c7edcad34b4?w=1920') center/cover no-repeat;
     }
+    .nav-active { border-bottom: 3px solid #9f1239; font-weight: 600; }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-50">
 
-  <!-- NAVBAR -->
-  <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between h-20 items-center bg-white/90 backdrop-blur-md shadow-sm">
-        <!-- Logo -->
-        <div class="flex items-center gap-3 cursor-pointer" onclick="showSection('home')">
-          <div class="bg-gradient-to-br from-primary to-secondary text-white p-2.5 rounded-xl shadow-md">
-            <i class="fa-solid fa-utensils text-xl"></i>
-          </div>
-          <span class="text-2xl font-bold tracking-tight text-gray-900">Reserva<span class="text-primary">Mesa</span></span>
+  <!-- HEADER -->
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="bg-red-700 text-white p-3 rounded-2xl">
+          <i class="fa-solid fa-utensils text-2xl"></i>
         </div>
-
-        <!-- Menú Desktop -->
-        <div class="hidden md:flex items-center space-x-8">
-          <button onclick="showSection('home')" id="nav-home" class="text-gray-600 hover:text-primary font-medium transition-colors">Restaurantes</button>
-          <button onclick="showSection('reservations')" id="nav-reservations" class="text-gray-600 hover:text-primary font-medium transition-colors">Mis Reservas</button>
-        </div>
-
-        <!-- Botones Auth -->
-        <div class="hidden md:flex items-center gap-3">
-          <button onclick="openModal('authModal')" class="text-gray-600 hover:text-primary font-medium px-4 py-2">Iniciar Sesión</button>
-          <button onclick="openModal('authModal')" class="bg-primary hover:bg-secondary text-white px-5 py-2.5 rounded-full font-medium shadow-lg hover:shadow-primary/50 transition-all transform hover:-translate-y-0.5">
-            Regístrate
-          </button>
-        </div>
-
-        <!-- Menu Mobile Button -->
-        <div class="md:hidden flex items-center">
-          <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-gray-600 text-2xl">
-            <i class="fa-solid fa-bars"></i>
-          </button>
+        <div>
+          <h1 class="text-2xl font-bold">Reserva Mesa</h1>
+          <p class="text-xs text-gray-500 -mt-1">Popayán • Cauca</p>
         </div>
       </div>
+
+      <nav class="flex items-center gap-8">
+        <button onclick="showSection('home')" class="nav-link nav-active px-4 py-2">Restaurantes</button>
+        <button onclick="showSection('reservations')" class="nav-link px-4 py-2">Mis Reservas</button>
+        <button onclick="showLoginModal()" class="px-6 py-2.5 border border-gray-300 rounded-xl hover:bg-gray-50">Iniciar Sesión</button>
+        <button onclick="showRegisterModal()" class="px-6 py-2.5 bg-red-700 text-white rounded-xl hover:bg-red-800">Registrarse</button>
+      </nav>
     </div>
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg p-4 space-y-4 absolute w-full">
-      <button onclick="showSection('home')" class="block w-full text-left text-gray-600 hover:text-primary">Restaurantes</button>
-      <button onclick="showSection('reservations')" class="block w-full text-left text-gray-600 hover:text-primary">Mis Reservas</button>
-      <button onclick="openModal('authModal')" class="block w-full text-left text-primary font-bold">Iniciar Sesión</button>
-    </div>
-  </nav>
+  </header>
 
   <!-- HOME SECTION -->
-  <section id="home-section" class="section fade-in pt-20">
-    <!-- Hero -->
-    <div class="hero-bg h-[60vh] flex items-center text-white justify-center">
-      <div class="text-center max-w-3xl px-4">
-        <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">Vive la gastronomía de Popayán</h1>
-        <p class="text-lg md:text-xl text-gray-200 mb-8">Encuentra y Reserva en los mejores restaurantes de la ciudad.</p>
-        <div class="bg-white p-2 rounded-full shadow-2xl flex flex-col md:flex-row items-center max-w-2xl mx-auto">
-          <div class="flex-1 w-full md:w-auto flex items-center border-b md:border-b-0 md:border-r border-gray-200 px-4 py-3">
-            <i class="fa-solid fa-search text-gray-400 mr-3"></i>
-            <input type="text" placeholder="¿Qué quieres comer hoy?" class="w-full outline-none text-gray-700 placeholder-gray-400">
-          </div>
-          <div class="flex-1 w-full md:w-auto flex items-center px-4 py-3">
-            <i class="fa-solid fa-location-dot text-gray-400 mr-3"></i>
-            <span class="text-gray-600">Popayán, Cauca</span>
-          </div>
-          <button class="w-full md:w-auto bg-primary hover:bg-secondary text-white px-8 py-3 rounded-full font-bold transition-colors">
-            Buscar
-          </button>
-        </div>
+  <section id="home-section" class="section">
+    <div class="hero h-[70vh] flex items-center text-white">
+      <div class="max-w-4xl mx-auto px-6 text-center">
+        <h2 class="text-5xl md:text-6xl font-bold mb-6">Encuentra y reserva tu mesa favorita</h2>
+        <p class="text-xl mb-10">Los mejores restaurantes de Popayán te esperan</p>
       </div>
     </div>
 
-    <!-- Restaurantes Grid -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div class="flex justify-between items-end mb-8">
-        <div>
-          <h2 class="text-3xl font-bold text-gray-900">Restaurantes Populares</h2>
-          <p class="text-gray-500 mt-1">Las mejores mesas esperándote</p>
-        </div>
-        <button class="text-primary hover:text Secondary font-medium hidden md:block">Ver todos <i class="fa-solid fa-arrow-right ml-1"></i></button>
-      </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="restaurantsContainer">
-        <!-- Se llena con JS -->
-      </div>
+    <div class="max-w-7xl mx-auto px-6 py-12">
+      <h2 class="text-3xl font-bold mb-8">Restaurantes Disponibles</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="restaurantsContainer"></div>
     </div>
   </section>
 
   <!-- MIS RESERVAS SECTION -->
-  <section id="reservations-section" class="section hidden fade-in pt-28 pb-16 min-h-screen">
-    <div class="max-w-5xl mx-auto px-4">
-      <h2 class="text-3xl font-bold text-gray-900 mb-8">Mis Reservas</h2>
-      <div id="reservationsList" class="space-y-6">
-        <!-- Se llena con JS -->
-      </div>
-      
-      <!-- Empty State -->
-      <div id="empty-reservations" class="hidden text-center py-20">
-        <div class="bg-gray-100 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
-          <i class="fa-solid fa-calendar-xmark text-4xl text-gray-400"></i>
-        </div>
-        <h3 class="text-xl font-semibold text-gray-700">No tienes reservas aún</h3>
-        <p class="text-gray-500 mt-2 mb-6">Explora los restaurantes y reserva tu mesa favorita.</p>
-        <button onclick="showSection('home')" class="text-primary font-bold">Ver Restaurantes</button>
-      </div>
+  <section id="reservations-section" class="section hidden max-w-7xl mx-auto px-6 py-12">
+    <h2 class="text-3xl font-bold mb-8">Mis Reservas</h2>
+    <div id="reservationsList" class="space-y-6">
+      <!-- Se llena con JavaScript -->
     </div>
   </section>
 
-  <!-- MODAL RESERVA -->
-  <div id="reservationModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <!-- Backdrop -->
-    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeModal('reservationModal')"></div>
-    <!-- Modal Content -->
-    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md relative z-10 overflow-hidden transform transition-all scale-100">
-      <div class="bg-primary p-4">
-        <h3 class="text-white text-xl font-bold text-center">Reservar Mesa</h3>
-        <p class="text-primary-100 text-center text-sm opacity-90" id="modalRestaurantName">Restaurant Nombre</p>
-      </div>
-      <div class="p-6 space-y-4">
-        <input type="hidden" id="currentResId">
-        
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1
+  <!-- LOGIN MODAL -->
+  <div id="loginModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-8 max-w-md w-full mx-4">
+      <h3 class="text-2xl font-bold mb-6">Iniciar Sesión</h3>
+      <input type="email" id="loginEmail" placeholder="Correo electrónico" class="w-full border rounded-xl px-4 py-3 mb-4">
+      <input type="password" id="loginPassword" placeholder="Contraseña" class="w-full border rounded-xl px-4 py-3 mb-6">
+      <button onclick="login()" class="w-full bg-red-700 text-white py-4 rounded-2xl font-medium">Entrar</button>
+      <p class="text-center text-sm text-gray-500 mt-4">Usuario prueba: admin@reservamesa.com / admin123</p>
+      <button onclick="closeModals()" class="mt-6 w-full text-gray-500">Cerrar</button>
+    </div>
+  </div>
+
+  <script>
+    // Datos de ejemplo
+    let reservations = [];
+
+    const restaurants = [
+      { id: 1, name: "Mora de Castilla", cuisine: "Tradicional Caucana", rating: 4.8, price: "$$", image: "https://picsum.photos/id/1015/600/400" },
+      { id: 2, name: "La Viña", cuisine: "Colombiana Moderna", rating: 4.7, price: "$$$", image: "https://picsum.photos/id/106/600/400" },
+      { id: 3, name: "Tequendama", cuisine: "Típica Payanesa", rating: 4.6, price: "$", image: "https://picsum.photos/id/201/600/400" }
+    ];
+
+    function renderRestaurants() {
+      const container = document.getElementById('restaurantsContainer');
+      container.innerHTML = restaurants.map(r => `
+        <div class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all">
+          <img src="${r.image}" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-semibold">${r.name}</h3>
+            <p class="text-gray-600">${r.cuisine}</p>
+            <div class="flex justify-between items-center mt-4">
+              <span class="text-yellow-500">★ ${r.rating}</span>
+              <span class="font-medium">${r.price}</span>
+            </div>
+            <button onclick="reserveRestaurant(${r.id})" 
+                    class="mt-6 w-full bg-red-700 text-white py-3.5 rounded-2xl hover:bg-red-800">
+              Reservar Mesa
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function reserveRestaurant(id) {
+      const restaurant = restaurants.find(r => r.id === id);
+      const date = prompt("Ingrese la fecha (YYYY-MM-DD):", "2026-05-30");
+      if (date) {
+        reservations.push({
+          id: Date.now(),
+          restaurant: restaurant.name,
+          date: date,
+          time: "20:00",
+          guests: 4,
+          status: "Confirmada"
+        });
+        alert(`✅ Reserva realizada en ${restaurant.name}`);
+        showSection('reservations');
+      }
+    }
+
+    function renderReservations() {
+      const container = document.getElementById('reservationsList');
+      if (reservations.length === 0) {
+        container.innerHTML = `<p class="text-center text-gray-500 py-12">Aún no tienes reservas</p>`;
+        return;
+      }
+      container.innerHTML = reservations.map(r => `
+        <div class="bg-white p-6 rounded-3xl shadow">
+          <div class="flex justify-between">
+            <h3 class="font-semibold">${r.restaurant}</h3>
+            <span class="text-green-600">${r.status}</span>
+          </div>
+          <p class="text-gray-600">Fecha: ${r.date} | Hora: ${r.time} | ${r.guests} personas</p>
+        </div>
+      `).join('');
+    }
+
+    function showSection(section) {
+      document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+      document.getElementById(section + '-section').classList.remove('hidden');
+      
+      if (section === 'reservations') renderReservations();
+    }
+
+    function showLoginModal() {
+      document.getElementById('loginModal').classList.remove('hidden');
+    }
+
+    function closeModals() {
+      document.getElementById('loginModal').classList.add('hidden');
+    }
+
+    function login() {
+      const email = document.getElementById('loginEmail').value;
+      const pass = document.getElementById('loginPassword').value;
+      
+      if (email && pass) {
+        alert("✅ Inicio de sesión exitoso (simulado)");
+        closeModals();
+      } else {
+        alert("Por favor ingresa tus datos");
+      }
+    }
+
+    function showRegisterModal() {
+      alert("Registro de usuario en desarrollo.\n\nPuedes usar la cuenta de prueba:\nadmin@reservamesa.com / admin123");
+    }
+
+    // Inicializar
+    window.onload = () => {
+      renderRestaurants();
+      showSection('home');
+    };
+  </script>
+</body>
+</html>
