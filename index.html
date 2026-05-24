@@ -1,24 +1,35 @@
+<!-- ============================
+RESERVA MESA - VERSION PREMIUM
+PEGA TODO ESTO EN index.html
+============================= -->
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Reserva Mesa | Popayán</title>
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0" />
+
+  <title>Reserva Mesa | Premium</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
   <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
   <style>
+
     body{
-      font-family:'Segoe UI',system-ui,sans-serif;
+      font-family:'Segoe UI',sans-serif;
       background:#f5f5f5;
     }
 
     .hero{
       background:
-      linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.75)),
+      linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
       url('https://images.unsplash.com/photo-1517248135467-4c7edcad34b4?w=1920')
       center/cover no-repeat;
     }
@@ -31,13 +42,7 @@
       display:block;
     }
 
-    .nav-active{
-      border-bottom:3px solid #b91c1c;
-      color:#b91c1c;
-      font-weight:700;
-    }
-
-    .fade-in{
+    .fade{
       animation:fade .3s ease;
     }
 
@@ -46,46 +51,49 @@
         opacity:0;
         transform:translateY(20px);
       }
+
       to{
         opacity:1;
         transform:translateY(0);
       }
     }
 
-    .toast{
-      animation:slide .4s ease;
-    }
-
-    @keyframes slide{
-      from{
-        opacity:0;
-        transform:translateX(100%);
-      }
-      to{
-        opacity:1;
-        transform:translateX(0);
-      }
+    .nav-active{
+      color:#b91c1c;
+      border-bottom:3px solid #b91c1c;
+      font-weight:700;
     }
 
   </style>
+
 </head>
 
 <body>
 
-<!-- HEADER -->
+<!-- =========================
+HEADER
+========================= -->
+
 <header class="bg-white shadow sticky top-0 z-50">
 
   <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
 
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-4">
 
-      <div class="bg-red-700 text-white p-3 rounded-2xl">
+      <div class="bg-red-700 text-white p-4 rounded-2xl">
         <i class="fa-solid fa-utensils text-2xl"></i>
       </div>
 
       <div>
-        <h1 class="text-2xl font-bold">Reserva Mesa</h1>
-        <p class="text-xs text-gray-500">Popayán • Cauca</p>
+
+        <h1 class="text-2xl font-bold">
+          Reserva Mesa
+        </h1>
+
+        <p class="text-gray-500 text-sm">
+          Popayán • Cauca
+        </p>
+
       </div>
 
     </div>
@@ -102,10 +110,55 @@
         Mis Reservas
       </button>
 
-      <button onclick="showLoginModal()"
-              class="border border-gray-300 px-5 py-2 rounded-xl hover:bg-gray-100">
-        Iniciar Sesión
+      <button onclick="showSection('profile')"
+              class="nav-btn px-3 py-2">
+        Mi Perfil
       </button>
+
+      <div id="authButtons"
+           class="flex items-center gap-4">
+
+        <button onclick="showLoginModal()"
+                class="border px-5 py-2 rounded-xl">
+          Iniciar Sesión
+        </button>
+
+        <button onclick="showRegisterModal()"
+                class="bg-red-700 text-white px-5 py-2 rounded-xl">
+          Registrarse
+        </button>
+
+      </div>
+
+      <div id="userMenu"
+           class="hidden items-center gap-4">
+
+        <div class="flex items-center gap-3 bg-gray-100 px-4 py-2 rounded-2xl">
+
+          <div class="bg-red-700 text-white w-10 h-10 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-user"></i>
+          </div>
+
+          <div>
+
+            <p id="userName"
+               class="font-semibold">
+            </p>
+
+            <p class="text-xs text-gray-500">
+              Usuario activo
+            </p>
+
+          </div>
+
+        </div>
+
+        <button onclick="logout()"
+                class="bg-black text-white px-4 py-2 rounded-xl">
+          Salir
+        </button>
+
+      </div>
 
     </nav>
 
@@ -113,19 +166,23 @@
 
 </header>
 
-<!-- HOME -->
-<section id="home-section" class="section active">
+<!-- =========================
+HOME
+========================= -->
+
+<section id="home-section"
+         class="section active">
 
   <div class="hero h-[70vh] flex items-center justify-center text-white">
 
-    <div class="text-center px-6">
+    <div class="text-center">
 
       <h2 class="text-6xl font-bold mb-6">
-        Encuentra tu mesa ideal
+        Reserva tu experiencia gastronómica
       </h2>
 
       <p class="text-xl text-gray-200">
-        Los mejores restaurantes de Popayán
+        Descubre los mejores restaurantes premium
       </p>
 
     </div>
@@ -134,13 +191,9 @@
 
   <div class="max-w-7xl mx-auto px-6 py-14">
 
-    <div class="flex justify-between items-center mb-10">
-
-      <h2 class="text-4xl font-bold">
-        Restaurantes Disponibles
-      </h2>
-
-    </div>
+    <h2 class="text-4xl font-bold mb-10">
+      Restaurantes Destacados
+    </h2>
 
     <div id="restaurantsContainer"
          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -150,7 +203,10 @@
 
 </section>
 
-<!-- RESERVATIONS -->
+<!-- =========================
+MIS RESERVAS
+========================= -->
+
 <section id="reservations-section"
          class="section max-w-7xl mx-auto px-6 py-14">
 
@@ -164,20 +220,87 @@
 
 </section>
 
-<!-- LOGIN MODAL -->
+<!-- =========================
+MI PERFIL
+========================= -->
+
+<section id="profile-section"
+         class="section max-w-5xl mx-auto px-6 py-14">
+
+  <div class="bg-white rounded-3xl shadow-xl p-10">
+
+    <div class="flex items-center gap-6 mb-10">
+
+      <div class="bg-red-700 text-white w-24 h-24 rounded-full flex items-center justify-center text-4xl">
+
+        <i class="fa-solid fa-user"></i>
+
+      </div>
+
+      <div>
+
+        <h2 id="profileName"
+            class="text-4xl font-bold">
+        </h2>
+
+        <p id="profileEmail"
+           class="text-gray-500 mt-2">
+        </p>
+
+      </div>
+
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <div class="bg-gray-100 p-6 rounded-3xl">
+
+        <h3 class="text-xl font-bold mb-3">
+          Reservas realizadas
+        </h3>
+
+        <p id="profileReservations"
+           class="text-5xl font-bold text-red-700">
+          0
+        </p>
+
+      </div>
+
+      <div class="bg-gray-100 p-6 rounded-3xl">
+
+        <h3 class="text-xl font-bold mb-3">
+          Estado de cuenta
+        </h3>
+
+        <p class="text-2xl font-bold text-green-600">
+          Premium
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =========================
+LOGIN MODAL
+========================= -->
+
 <div id="loginModal"
      class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
 
-  <div class="bg-white rounded-3xl w-full max-w-md p-8 fade-in">
+  <div class="bg-white rounded-3xl w-full max-w-md p-8 fade">
 
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex justify-between items-center mb-8">
 
       <h2 class="text-3xl font-bold">
         Iniciar Sesión
       </h2>
 
       <button onclick="closeModals()"
-              class="text-2xl text-gray-400 hover:text-black">
+              class="text-3xl">
         ×
       </button>
 
@@ -186,41 +309,108 @@
     <div class="space-y-5">
 
       <div>
-        <label class="text-sm text-gray-600">
+
+        <label class="font-medium">
           Correo electrónico
         </label>
 
         <input type="email"
                id="loginEmail"
-               placeholder="correo@ejemplo.com"
                class="w-full border rounded-2xl px-5 py-4 mt-2">
+
       </div>
 
       <div>
-        <label class="text-sm text-gray-600">
+
+        <label class="font-medium">
           Contraseña
         </label>
 
         <input type="password"
                id="loginPassword"
-               placeholder="••••••••"
                class="w-full border rounded-2xl px-5 py-4 mt-2">
+
       </div>
 
       <button onclick="login()"
-              class="w-full bg-red-700 hover:bg-red-800 text-white py-4 rounded-2xl font-semibold text-lg">
+              class="w-full bg-red-700 hover:bg-red-800 text-white py-4 rounded-2xl text-lg font-semibold">
 
         Entrar
 
       </button>
 
-      <div class="bg-gray-100 p-4 rounded-2xl text-sm text-gray-600">
+    </div>
 
-        <strong>Usuario prueba:</strong><br>
-        admin@reservamesa.com<br>
-        admin123
+  </div>
+
+</div>
+
+<!-- =========================
+REGISTER MODAL
+========================= -->
+
+<div id="registerModal"
+     class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+
+  <div class="bg-white rounded-3xl w-full max-w-md p-8 fade">
+
+    <div class="flex justify-between items-center mb-8">
+
+      <h2 class="text-3xl font-bold">
+        Crear Cuenta
+      </h2>
+
+      <button onclick="closeModals()"
+              class="text-3xl">
+        ×
+      </button>
+
+    </div>
+
+    <div class="space-y-5">
+
+      <div>
+
+        <label class="font-medium">
+          Nombre completo
+        </label>
+
+        <input type="text"
+               id="registerName"
+               class="w-full border rounded-2xl px-5 py-4 mt-2">
 
       </div>
+
+      <div>
+
+        <label class="font-medium">
+          Correo electrónico
+        </label>
+
+        <input type="email"
+               id="registerEmail"
+               class="w-full border rounded-2xl px-5 py-4 mt-2">
+
+      </div>
+
+      <div>
+
+        <label class="font-medium">
+          Contraseña
+        </label>
+
+        <input type="password"
+               id="registerPassword"
+               class="w-full border rounded-2xl px-5 py-4 mt-2">
+
+      </div>
+
+      <button onclick="register()"
+              class="w-full bg-red-700 hover:bg-red-800 text-white py-4 rounded-2xl text-lg font-semibold">
+
+        Registrarse
+
+      </button>
 
     </div>
 
@@ -230,7 +420,8 @@
 
 <script>
 
-let currentUser = null;
+let currentUser =
+JSON.parse(localStorage.getItem('currentUser')) || null;
 
 let reservations =
 JSON.parse(localStorage.getItem('reservations')) || [];
@@ -259,9 +450,36 @@ const restaurants = [
   id:3,
   name:"Tequendama",
   cuisine:"Típica Payanesa",
-  rating:4.6,
-  price:"$",
+  rating:4.9,
+  price:"$$",
   image:"https://images.unsplash.com/photo-1559339352-11d035aa65de?w=1200"
+},
+
+{
+  id:4,
+  name:"Bistro Gourmet",
+  cuisine:"Internacional",
+  rating:4.9,
+  price:"$$$$",
+  image:"https://images.unsplash.com/photo-1541544181051-e46607dffdf5?w=1200"
+},
+
+{
+  id:5,
+  name:"Sabor Andino",
+  cuisine:"Comida Andina",
+  rating:4.5,
+  price:"$$",
+  image:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200"
+},
+
+{
+  id:6,
+  name:"Casa Payanesa",
+  cuisine:"Cocina Colonial",
+  rating:4.7,
+  price:"$$$",
+  image:"https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200"
 }
 
 ];
@@ -273,14 +491,14 @@ function renderRestaurants(){
 
   container.innerHTML = restaurants.map(r=>`
 
-    <div class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300">
+    <div class="bg-white rounded-3xl overflow-hidden shadow-xl hover:scale-105 transition duration-300">
 
       <img src="${r.image}"
-           class="w-full h-60 object-cover">
+           class="w-full h-64 object-cover">
 
       <div class="p-6">
 
-        <div class="flex justify-between items-start">
+        <div class="flex justify-between">
 
           <div>
 
@@ -294,22 +512,22 @@ function renderRestaurants(){
 
           </div>
 
-          <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
+          <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full h-fit">
             ★ ${r.rating}
           </span>
 
         </div>
 
-        <div class="flex justify-between items-center mt-6">
+        <div class="flex justify-between items-center mt-8">
 
           <span class="font-bold text-lg">
             ${r.price}
           </span>
 
-          <button onclick="openRestaurant(${r.id})"
+          <button onclick="openReservation(${r.id})"
                   class="bg-red-700 hover:bg-red-800 text-white px-5 py-3 rounded-2xl">
 
-            Ver Restaurante
+            Reservar
 
           </button>
 
@@ -323,150 +541,130 @@ function renderRestaurants(){
 
 }
 
-function openRestaurant(id){
+function openReservation(id){
+
+  if(!currentUser){
+
+    showToast('Debes iniciar sesión primero',true);
+
+    showLoginModal();
+
+    return;
+
+  }
 
   const r = restaurants.find(x=>x.id===id);
 
   document.body.insertAdjacentHTML('beforeend',`
 
-    <div id="restaurantModal"
-         class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+  <div id="reservationModal"
+       class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
 
-      <div class="bg-white rounded-3xl overflow-hidden max-w-2xl w-full fade-in">
+    <div class="bg-white rounded-3xl w-full max-w-xl p-8 fade">
 
-        <img src="${r.image}"
-             class="w-full h-72 object-cover">
+      <div class="flex justify-between items-center mb-8">
 
-        <div class="p-8">
+        <div>
 
-          <div class="flex justify-between items-start mb-6">
+          <h2 class="text-3xl font-bold">
+            Reservar Mesa
+          </h2>
 
-            <div>
-
-              <h2 class="text-4xl font-bold">
-                ${r.name}
-              </h2>
-
-              <p class="text-gray-500 mt-2">
-                ${r.cuisine}
-              </p>
-
-            </div>
-
-            <button onclick="closeRestaurantModal()"
-                    class="text-3xl text-gray-400 hover:text-black">
-              ×
-            </button>
-
-          </div>
-
-          <div class="grid grid-cols-2 gap-4 mb-8">
-
-            <div class="bg-gray-100 p-5 rounded-2xl">
-              ⭐ ${r.rating} estrellas
-            </div>
-
-            <div class="bg-gray-100 p-5 rounded-2xl">
-              💰 ${r.price}
-            </div>
-
-          </div>
-
-          <p class="text-gray-600 leading-relaxed mb-8">
-
-            Disfruta una experiencia gastronómica premium en uno de los mejores restaurantes de Popayán. Ambiente elegante, excelente atención y platos únicos.
-
+          <p class="text-gray-500 mt-1">
+            ${r.name}
           </p>
 
-          <button onclick="openReservation(${r.id})"
-                  class="w-full bg-red-700 hover:bg-red-800 text-white py-4 rounded-2xl text-lg font-semibold">
-
-            Reservar Mesa
-
-          </button>
-
         </div>
+
+        <button onclick="closeReservationModal()"
+                class="text-3xl">
+          ×
+        </button>
 
       </div>
 
-    </div>
+      <div class="space-y-5">
 
-  `);
+        <div>
 
-}
-
-function closeRestaurantModal(){
-
-  document.getElementById('restaurantModal').remove();
-
-}
-
-function openReservation(id){
-
-  closeRestaurantModal();
-
-  const r = restaurants.find(x=>x.id===id);
-
-  document.body.insertAdjacentHTML('beforeend',`
-
-    <div id="reservationModal"
-         class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
-
-      <div class="bg-white rounded-3xl w-full max-w-lg p-8 fade-in">
-
-        <div class="flex justify-between items-center mb-8">
-
-          <div>
-
-            <h2 class="text-3xl font-bold">
-              Reservar Mesa
-            </h2>
-
-            <p class="text-gray-500 mt-1">
-              ${r.name}
-            </p>
-
-          </div>
-
-          <button onclick="closeReservationModal()"
-                  class="text-3xl text-gray-400 hover:text-black">
-            ×
-          </button>
-
-        </div>
-
-        <div class="space-y-5">
+          <label class="font-medium">
+            Fecha de reserva
+          </label>
 
           <input type="date"
                  id="reservationDate"
-                 class="w-full border rounded-2xl px-5 py-4">
+                 class="w-full border rounded-2xl px-5 py-4 mt-2">
+
+        </div>
+
+        <div>
+
+          <label class="font-medium">
+            Hora de reserva
+          </label>
 
           <input type="time"
                  id="reservationTime"
-                 class="w-full border rounded-2xl px-5 py-4">
+                 class="w-full border rounded-2xl px-5 py-4 mt-2">
+
+        </div>
+
+        <div>
+
+          <label class="font-medium">
+            Mesa para cuántas personas
+          </label>
 
           <input type="number"
                  id="reservationGuests"
                  min="1"
                  value="2"
-                 class="w-full border rounded-2xl px-5 py-4">
-
-          <textarea id="reservationComment"
-                    placeholder="Comentarios adicionales"
-                    class="w-full border rounded-2xl px-5 py-4 h-32"></textarea>
-
-          <button onclick="confirmReservation(${r.id})"
-                  class="w-full bg-red-700 hover:bg-red-800 text-white py-4 rounded-2xl font-semibold text-lg">
-
-            Confirmar Reserva
-
-          </button>
+                 class="w-full border rounded-2xl px-5 py-4 mt-2">
 
         </div>
+
+        <div>
+
+          <label class="font-medium">
+            Zona del restaurante
+          </label>
+
+          <select id="reservationZone"
+                  class="w-full border rounded-2xl px-5 py-4 mt-2">
+
+            <option>Zona VIP</option>
+            <option>Terraza</option>
+            <option>Interior</option>
+            <option>Ventana</option>
+
+          </select>
+
+        </div>
+
+        <div>
+
+          <label class="font-medium">
+            Comentarios adicionales
+          </label>
+
+          <textarea id="reservationComment"
+                    class="w-full border rounded-2xl px-5 py-4 mt-2 h-32"
+                    placeholder="Cumpleaños, decoración especial, etc"></textarea>
+
+        </div>
+
+        <button onclick="confirmReservation(${r.id})"
+                class="w-full bg-red-700 hover:bg-red-800 text-white py-4 rounded-2xl text-lg font-semibold">
+
+          Confirmar Reserva
+
+        </button>
 
       </div>
 
     </div>
+
+  </div>
 
   `);
 
@@ -482,7 +680,7 @@ function confirmReservation(id){
 
   const r = restaurants.find(x=>x.id===id);
 
-  const reservation = {
+  reservations.push({
 
     id:Date.now(),
 
@@ -494,13 +692,13 @@ function confirmReservation(id){
 
     guests:document.getElementById('reservationGuests').value,
 
+    zone:document.getElementById('reservationZone').value,
+
     comment:document.getElementById('reservationComment').value,
 
-    status:"Confirmada"
+    status:'Confirmada'
 
-  };
-
-  reservations.push(reservation);
+  });
 
   localStorage.setItem(
     'reservations',
@@ -509,11 +707,11 @@ function confirmReservation(id){
 
   closeReservationModal();
 
-  showToast(
-    `Reserva confirmada en ${r.name}`
-  );
+  renderReservations();
 
-  showSection('reservations');
+  updateProfile();
+
+  showToast('Reserva realizada exitosamente');
 
 }
 
@@ -526,21 +724,21 @@ function renderReservations(){
 
     container.innerHTML = `
 
-      <div class="bg-white rounded-3xl p-14 text-center shadow">
+    <div class="bg-white p-16 rounded-3xl text-center shadow-xl">
 
-        <div class="text-7xl mb-5">
-          🍽️
-        </div>
-
-        <h3 class="text-3xl font-bold mb-3">
-          No tienes reservas
-        </h3>
-
-        <p class="text-gray-500">
-          Haz tu primera reserva ahora
-        </p>
-
+      <div class="text-7xl mb-6">
+        🍽️
       </div>
+
+      <h3 class="text-3xl font-bold mb-3">
+        No tienes reservas
+      </h3>
+
+      <p class="text-gray-500">
+        Tus reservas aparecerán aquí
+      </p>
+
+    </div>
 
     `;
 
@@ -550,51 +748,51 @@ function renderReservations(){
 
   container.innerHTML = reservations.map(r=>`
 
-    <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+    <div class="bg-white rounded-3xl shadow-xl p-8">
 
-      <div class="p-8">
+      <div class="flex justify-between items-center">
 
-        <div class="flex justify-between items-center">
+        <div>
 
-          <div>
+          <h3 class="text-2xl font-bold">
+            ${r.restaurant}
+          </h3>
 
-            <h3 class="text-2xl font-bold">
-              ${r.restaurant}
-            </h3>
-
-            <p class="text-gray-500 mt-2">
-              ${r.date} • ${r.time}
-            </p>
-
-          </div>
-
-          <span class="bg-green-100 text-green-700 px-5 py-2 rounded-full">
-            ${r.status}
-          </span>
+          <p class="text-gray-500 mt-2">
+            ${r.date} • ${r.time}
+          </p>
 
         </div>
 
-        <div class="grid grid-cols-2 gap-4 mt-8">
+        <span class="bg-green-100 text-green-700 px-5 py-2 rounded-full">
+          ${r.status}
+        </span>
 
-          <div class="bg-gray-100 p-5 rounded-2xl">
-            👥 ${r.guests} personas
-          </div>
+      </div>
 
-          <div class="bg-gray-100 p-5 rounded-2xl">
-            📍 Popayán
-          </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
 
+        <div class="bg-gray-100 p-5 rounded-2xl">
+          👥 ${r.guests} personas
         </div>
 
-        <div class="mt-5">
-
-          <div class="bg-gray-50 p-5 rounded-2xl text-gray-600">
-
-            ${r.comment || 'Sin comentarios adicionales'}
-
-          </div>
-
+        <div class="bg-gray-100 p-5 rounded-2xl">
+          📍 ${r.zone}
         </div>
+
+        <div class="bg-gray-100 p-5 rounded-2xl">
+          🍷 Premium
+        </div>
+
+        <div class="bg-gray-100 p-5 rounded-2xl">
+          ⭐ VIP
+        </div>
+
+      </div>
+
+      <div class="bg-gray-50 p-5 rounded-2xl mt-5 text-gray-600">
+
+        ${r.comment || 'Sin comentarios'}
 
       </div>
 
@@ -616,15 +814,15 @@ function showSection(section){
   .forEach(btn=>btn.classList.remove('nav-active'));
 
   if(section==='home'){
-    document.querySelectorAll('.nav-btn')[0]
-    .classList.add('nav-active');
+    document.querySelectorAll('.nav-btn')[0].classList.add('nav-active');
   }
 
   if(section==='reservations'){
-    document.querySelectorAll('.nav-btn')[1]
-    .classList.add('nav-active');
+    document.querySelectorAll('.nav-btn')[1].classList.add('nav-active');
+  }
 
-    renderReservations();
+  if(section==='profile'){
+    document.querySelectorAll('.nav-btn')[2].classList.add('nav-active');
   }
 
 }
@@ -636,9 +834,19 @@ function showLoginModal(){
 
 }
 
+function showRegisterModal(){
+
+  document.getElementById('registerModal')
+  .classList.remove('hidden');
+
+}
+
 function closeModals(){
 
   document.getElementById('loginModal')
+  .classList.add('hidden');
+
+  document.getElementById('registerModal')
   .classList.add('hidden');
 
 }
@@ -651,12 +859,46 @@ function login(){
   const pass =
   document.getElementById('loginPassword').value;
 
-  if(
-    email==="admin@reservamesa.com" &&
-    pass==="admin123"
-  ){
+  if(email && pass){
 
     currentUser = {
+
+      name:'Usuario Premium',
+
+      email
+
+    };
+
+    localStorage.setItem(
+      'currentUser',
+      JSON.stringify(currentUser)
+    );
+
+    updateUserUI();
+
+    closeModals();
+
+    showToast('Inicio de sesión exitoso');
+
+  }
+
+}
+
+function register(){
+
+  const name =
+  document.getElementById('registerName').value;
+
+  const email =
+  document.getElementById('registerEmail').value;
+
+  const pass =
+  document.getElementById('registerPassword').value;
+
+  if(name && email && pass){
+
+    currentUser = {
+      name,
       email
     };
 
@@ -665,20 +907,68 @@ function login(){
       JSON.stringify(currentUser)
     );
 
+    updateUserUI();
+
     closeModals();
 
-    showToast(
-      'Inicio de sesión exitoso'
-    );
+    showToast('Cuenta creada exitosamente');
+
+  }
+
+}
+
+function logout(){
+
+  localStorage.removeItem('currentUser');
+
+  currentUser = null;
+
+  updateUserUI();
+
+  showToast('Sesión cerrada');
+
+}
+
+function updateUserUI(){
+
+  if(currentUser){
+
+    document.getElementById('authButtons')
+    .classList.add('hidden');
+
+    document.getElementById('userMenu')
+    .classList.remove('hidden');
+
+    document.getElementById('userMenu')
+    .classList.add('flex');
+
+    document.getElementById('userName')
+    .innerText = currentUser.name;
+
+    document.getElementById('profileName')
+    .innerText = currentUser.name;
+
+    document.getElementById('profileEmail')
+    .innerText = currentUser.email;
 
   }else{
 
-    showToast(
-      'Correo o contraseña incorrectos',
-      true
-    );
+    document.getElementById('authButtons')
+    .classList.remove('hidden');
+
+    document.getElementById('userMenu')
+    .classList.add('hidden');
 
   }
+
+  updateProfile();
+
+}
+
+function updateProfile(){
+
+  document.getElementById('profileReservations')
+  .innerText = reservations.length;
 
 }
 
@@ -688,15 +978,14 @@ function showToast(message,error=false){
   document.createElement('div');
 
   toast.className = `
-    toast
     fixed
-    top-6
-    right-6
-    z-50
+    top-5
+    right-5
     px-6
     py-4
     rounded-2xl
     text-white
+    z-50
     shadow-2xl
     ${error ? 'bg-red-600' : 'bg-green-600'}
   `;
@@ -706,7 +995,6 @@ function showToast(message,error=false){
       <span class="text-2xl">
         ${error ? '❌' : '✅'}
       </span>
-
       <span>${message}</span>
     </div>
   `;
@@ -723,7 +1011,9 @@ window.onload = ()=>{
 
   renderRestaurants();
 
-  showSection('home');
+  renderReservations();
+
+  updateUserUI();
 
 };
 
