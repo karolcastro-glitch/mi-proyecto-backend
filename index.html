@@ -1,119 +1,140 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Sistema de Gestión de Reservas</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reserva Mesa | Popayán</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34b4?w=1920') center/cover no-repeat;
+    }
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    }
+  </style>
 </head>
-<body class="bg-slate-50 min-h-screen font-sans text-slate-800 antialiased">
+<body class="bg-gray-50">
 
-    <div class="max-w-6xl mx-auto px-4 py-8">
-        <header class="flex flex-col md:flex-row items-center justify-between mb-8 border-b border-slate-200 pb-5 gap-4">
-            <div class="flex items-center gap-3">
-                <div class="bg-indigo-600 text-white p-3 rounded-xl shadow-md shadow-indigo-100">
-                    <i class="fa-solid fa-utensils text-xl"></i>
-                </div>
-                <div>
-                    <h1 class="text-2xl font-bold text-slate-900 tracking-tight">GourmetReserve</h1>
-                    <p class="text-sm text-slate-500">Administración de Base de Datos • Unicomfacauca</p>
-                </div>
+  <!-- HEADER -->
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="bg-red-700 text-white p-3 rounded-2xl">
+          <i class="fa-solid fa-utensils text-2xl"></i>
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">Reserva Mesa</h1>
+          <p class="text-xs text-gray-500 -mt-1">Popayán, Cauca</p>
+        </div>
+      </div>
+      
+      <nav class="flex items-center gap-8 text-sm font-medium">
+        <a href="#" class="text-gray-700 hover:text-red-700 transition-colors">Restaurantes</a>
+        <a href="#" class="text-gray-700 hover:text-red-700 transition-colors">Cómo funciona</a>
+        <a href="#" class="text-gray-700 hover:text-red-700 transition-colors">Mis Reservas</a>
+        <button onclick="document.getElementById('login-modal').classList.remove('hidden')"
+                class="px-6 py-2.5 bg-white border border-gray-300 rounded-xl hover:bg-gray-50">
+          Iniciar Sesión
+        </button>
+        <button class="px-6 py-2.5 bg-red-700 text-white rounded-xl hover:bg-red-800 transition-colors">
+          Registrarse
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero h-screen flex items-center text-white">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-6xl font-bold mb-6 leading-tight">
+        Reserva tu mesa<br>en los mejores restaurantes
+      </h2>
+      <p class="text-xl mb-10 text-gray-200">
+        Encuentra y reserva en los mejores lugares de Popayán en segundos
+      </p>
+      <div class="max-w-md mx-auto bg-white rounded-3xl p-2 shadow-2xl">
+        <div class="flex bg-gray-100 rounded-3xl p-1">
+          <input type="text" id="search" 
+                 class="flex-1 bg-transparent px-6 py-4 outline-none text-gray-800 placeholder-gray-500 text-lg"
+                 placeholder="Busca un restaurante o tipo de comida...">
+          <button onclick="alert('Buscando... (Funcionalidad en desarrollo)')" 
+                  class="bg-red-700 text-white px-10 rounded-3xl font-medium hover:bg-red-800">
+            Buscar
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESTAURANTES DESTACADOS -->
+  <section class="max-w-7xl mx-auto px-6 py-16">
+    <h2 class="text-4xl font-bold text-center mb-4">Restaurantes Destacados</h2>
+    <p class="text-center text-gray-600 mb-12">Elige entre los mejores lugares de Popayán</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="restaurants">
+      <!-- Las cards se generan con JavaScript abajo -->
+    </div>
+  </section>
+
+  <script>
+    const restaurants = [
+      {
+        name: "Mora de Castilla",
+        cuisine: "Tradicional Caucana",
+        rating: 4.8,
+        price: "$$",
+        image: "https://images.unsplash.com/photo-1569072412439-e8cd5d6f22df?w=600"
+      },
+      {
+        name: "La Viña",
+        cuisine: "Colombiana Contemporánea",
+        rating: 4.7,
+        price: "$$$",
+        image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34b4?w=600"
+      },
+      {
+        name: "Tequendama",
+        cuisine: "Típica del Cauca",
+        rating: 4.6,
+        price: "$",
+        image: "https://images.unsplash.com/photo-1621986233880-bba6cc64269e?w=600"
+      }
+    ];
+
+    function renderRestaurants() {
+      const container = document.getElementById('restaurants');
+      container.innerHTML = restaurants.map(r => `
+        <div class="bg-white rounded-3xl overflow-hidden shadow-lg card-hover cursor-pointer" onclick="alert('Abriendo detalle de ${r.name}...')">
+          <img src="${r.image}" class="w-full h-56 object-cover">
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-3">
+              <h3 class="text-2xl font-semibold">${r.name}</h3>
+              <span class="text-green-600 font-medium">${r.price}</span>
             </div>
-            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
-                <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span> Sistema Operativo
-            </span>
-        </header>
-
-        <section class="mb-12">
-            <div class="flex items-center gap-2 mb-4">
-                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Módulo de Distribución (Mesas)</h2>
-                <div class="h-0.5 bg-slate-200 flex-1"></div>
+            <p class="text-gray-600 mb-4">${r.cuisine}</p>
+            <div class="flex items-center gap-2 text-yellow-500">
+              ★★★★☆ <span class="text-gray-600 text-sm ml-1">${r.rating}</span>
             </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                    <h3 class="font-semibold text-sm mb-4 text-slate-700 flex items-center gap-2">
-                        <i class="fa-solid fa-plus text-indigo-600"></i> Configurar Nueva Mesa
-                    </h3>
-                    <form id="formMesa" class="space-y-3">
-                        <div>
-                            <label class="block text-xs font-medium text-slate-500 mb-1">Número de Mesa</label>
-                            <input type="number" id="numMesa" required class="w-full px-3 py-2 border border-slate-200 bg-slate-50 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 focus:outline-none transition-all">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-500 mb-1">Capacidad (Asientos)</label>
-                            <input type="number" id="capacidadMesa" required class="w-full px-3 py-2 border border-slate-200 bg-slate-50 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 focus:outline-none transition-all">
-                        </div>
-                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 rounded-lg transition-all cursor-pointer shadow-sm shadow-indigo-100">
-                            Guardar Mesa
-                        </button>
-                    </form>
-                </div>
-                <div class="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-50/80 text-slate-400 text-xs font-semibold uppercase border-b border-slate-100">
-                            <tr>
-                                <th class="p-4">Identificador</th>
-                                <th class="p-4">Capacidad Registrada</th>
-                                <th class="p-4 text-center">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody id="listaMesas" class="divide-y divide-slate-100">
-                            </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <div class="flex items-center gap-2 mb-4">
-                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Módulo de Reservaciones de Clientes</h2>
-                <div class="h-0.5 bg-slate-200 flex-1"></div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                    <h3 class="font-semibold text-sm mb-4 text-slate-700 flex items-center gap-2">
-                        <i class="fa-regular fa-calendar-plus text-indigo-600"></i> Agendar Turno
-                    </h3>
-                    <form id="formReserva" class="space-y-3">
-                        <div>
-                            <label class="block text-xs font-medium text-slate-500 mb-1">Asignar Mesa Disponible</label>
-                            <select id="selectMesa" required class="w-full px-3 py-2 border border-slate-200 bg-slate-50 rounded-lg text-sm focus:outline-none"></select>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="block text-xs font-medium text-slate-500 mb-1">Fecha</label>
-                                <input type="date" id="fechaReserva" required class="w-full px-3 py-2 border border-slate-200 bg-slate-50 rounded-lg text-sm focus:outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-slate-500 mb-1">Hora</label>
-                                <input type="time" id="horaReserva" required class="w-full px-3 py-2 border border-slate-200 bg-
-                                <script>
-    // Esta es la dirección del túnel SSH que conecta la Mac con el Windows de Karol
-    const API_URL = 'http://127.0.0.1:3000/api/mesas';
-
-    // Función mágica para traer las mesas de la base de datos
-    async function cargarMesas() {
-        try {
-            const respuesta = await fetch(API_URL);
-            if (!respuesta.ok) throw new Error('Error en el servidor');
-            
-            const mesas = await respuesta.json();
-            console.log('Mesas recibidas de Railway:', mesas);
-            
-            // Aquí es donde ustedes dibujan las mesas en el HTML.
-            // Por ahora, pongamos este aviso para saber si conectó:
-            alert('¡Conexión exitosa! El sistema trajo ' + mesas.length + ' mesas.');
-            
-        } catch (error) {
-            console.error('Error al conectar:', error);
-            alert('No se pudo conectar al backend de Karol. Revisa que server.js esté encendido.');
-        }
+            <button class="mt-6 w-full bg-gray-900 text-white py-4 rounded-2xl font-medium hover:bg-red-700 transition-colors">
+              Ver Disponibilidad
+            </button>
+          </div>
+        </div>
+      `).join('');
     }
 
-    // Ejecutar la función apenas cargue la página
-    window.onload = cargarMesas;
-</script>
+    // Renderizar al cargar
+    window.onload = renderRestaurants;
+  </script>
+
+</body>
+</html>
