@@ -1,180 +1,733 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Reserva Mesa | Popayán</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+
   <style>
-    body { font-family: 'Segoe UI', system-ui, sans-serif; }
-    .hero {
-      background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), 
-                  url('https://images.unsplash.com/photo-1517248135467-4c7edcad34b4?w=1920') center/cover no-repeat;
+    body{
+      font-family:'Segoe UI',system-ui,sans-serif;
+      background:#f5f5f5;
     }
-    .nav-active { border-bottom: 3px solid #9f1239; font-weight: 600; }
+
+    .hero{
+      background:
+      linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.75)),
+      url('https://images.unsplash.com/photo-1517248135467-4c7edcad34b4?w=1920')
+      center/cover no-repeat;
+    }
+
+    .section{
+      display:none;
+    }
+
+    .section.active{
+      display:block;
+    }
+
+    .nav-active{
+      border-bottom:3px solid #b91c1c;
+      color:#b91c1c;
+      font-weight:700;
+    }
+
+    .fade-in{
+      animation:fade .3s ease;
+    }
+
+    @keyframes fade{
+      from{
+        opacity:0;
+        transform:translateY(20px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    .toast{
+      animation:slide .4s ease;
+    }
+
+    @keyframes slide{
+      from{
+        opacity:0;
+        transform:translateX(100%);
+      }
+      to{
+        opacity:1;
+        transform:translateX(0);
+      }
+    }
+
   </style>
 </head>
-<body class="bg-gray-50">
 
-  <!-- HEADER -->
-  <header class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <div class="bg-red-700 text-white p-3 rounded-2xl">
-          <i class="fa-solid fa-utensils text-2xl"></i>
-        </div>
-        <div>
-          <h1 class="text-2xl font-bold">Reserva Mesa</h1>
-          <p class="text-xs text-gray-500 -mt-1">Popayán • Cauca</p>
-        </div>
+<body>
+
+<!-- HEADER -->
+<header class="bg-white shadow sticky top-0 z-50">
+
+  <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+
+    <div class="flex items-center gap-3">
+
+      <div class="bg-red-700 text-white p-3 rounded-2xl">
+        <i class="fa-solid fa-utensils text-2xl"></i>
       </div>
 
-      <nav class="flex items-center gap-8">
-        <button onclick="showSection('home')" class="nav-link nav-active px-4 py-2">Restaurantes</button>
-        <button onclick="showSection('reservations')" class="nav-link px-4 py-2">Mis Reservas</button>
-        <button onclick="showLoginModal()" class="px-6 py-2.5 border border-gray-300 rounded-xl hover:bg-gray-50">Iniciar Sesión</button>
-        <button onclick="showRegisterModal()" class="px-6 py-2.5 bg-red-700 text-white rounded-xl hover:bg-red-800">Registrarse</button>
-      </nav>
-    </div>
-  </header>
-
-  <!-- HOME SECTION -->
-  <section id="home-section" class="section">
-    <div class="hero h-[70vh] flex items-center text-white">
-      <div class="max-w-4xl mx-auto px-6 text-center">
-        <h2 class="text-5xl md:text-6xl font-bold mb-6">Encuentra y reserva tu mesa favorita</h2>
-        <p class="text-xl mb-10">Los mejores restaurantes de Popayán te esperan</p>
+      <div>
+        <h1 class="text-2xl font-bold">Reserva Mesa</h1>
+        <p class="text-xs text-gray-500">Popayán • Cauca</p>
       </div>
+
     </div>
 
-    <div class="max-w-7xl mx-auto px-6 py-12">
-      <h2 class="text-3xl font-bold mb-8">Restaurantes Disponibles</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="restaurantsContainer"></div>
-    </div>
-  </section>
+    <nav class="flex items-center gap-6">
 
-  <!-- MIS RESERVAS SECTION -->
-  <section id="reservations-section" class="section hidden max-w-7xl mx-auto px-6 py-12">
-    <h2 class="text-3xl font-bold mb-8">Mis Reservas</h2>
-    <div id="reservationsList" class="space-y-6">
-      <!-- Se llena con JavaScript -->
-    </div>
-  </section>
+      <button onclick="showSection('home')"
+              class="nav-btn nav-active px-3 py-2">
+        Restaurantes
+      </button>
 
-  <!-- LOGIN MODAL -->
-  <div id="loginModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-    <div class="bg-white rounded-3xl p-8 max-w-md w-full mx-4">
-      <h3 class="text-2xl font-bold mb-6">Iniciar Sesión</h3>
-      <input type="email" id="loginEmail" placeholder="Correo electrónico" class="w-full border rounded-xl px-4 py-3 mb-4">
-      <input type="password" id="loginPassword" placeholder="Contraseña" class="w-full border rounded-xl px-4 py-3 mb-6">
-      <button onclick="login()" class="w-full bg-red-700 text-white py-4 rounded-2xl font-medium">Entrar</button>
-      <p class="text-center text-sm text-gray-500 mt-4">Usuario prueba: admin@reservamesa.com / admin123</p>
-      <button onclick="closeModals()" class="mt-6 w-full text-gray-500">Cerrar</button>
-    </div>
+      <button onclick="showSection('reservations')"
+              class="nav-btn px-3 py-2">
+        Mis Reservas
+      </button>
+
+      <button onclick="showLoginModal()"
+              class="border border-gray-300 px-5 py-2 rounded-xl hover:bg-gray-100">
+        Iniciar Sesión
+      </button>
+
+    </nav>
+
   </div>
 
-  <script>
-    // Datos de ejemplo
-    let reservations = [];
+</header>
 
-    const restaurants = [
-      { id: 1, name: "Mora de Castilla", cuisine: "Tradicional Caucana", rating: 4.8, price: "$$", image: "https://picsum.photos/id/1015/600/400" },
-      { id: 2, name: "La Viña", cuisine: "Colombiana Moderna", rating: 4.7, price: "$$$", image: "https://picsum.photos/id/106/600/400" },
-      { id: 3, name: "Tequendama", cuisine: "Típica Payanesa", rating: 4.6, price: "$", image: "https://picsum.photos/id/201/600/400" }
-    ];
+<!-- HOME -->
+<section id="home-section" class="section active">
 
-    function renderRestaurants() {
-      const container = document.getElementById('restaurantsContainer');
-      container.innerHTML = restaurants.map(r => `
-        <div class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all">
-          <img src="${r.image}" class="w-full h-48 object-cover">
-          <div class="p-6">
-            <h3 class="text-xl font-semibold">${r.name}</h3>
-            <p class="text-gray-600">${r.cuisine}</p>
-            <div class="flex justify-between items-center mt-4">
-              <span class="text-yellow-500">★ ${r.rating}</span>
-              <span class="font-medium">${r.price}</span>
+  <div class="hero h-[70vh] flex items-center justify-center text-white">
+
+    <div class="text-center px-6">
+
+      <h2 class="text-6xl font-bold mb-6">
+        Encuentra tu mesa ideal
+      </h2>
+
+      <p class="text-xl text-gray-200">
+        Los mejores restaurantes de Popayán
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 py-14">
+
+    <div class="flex justify-between items-center mb-10">
+
+      <h2 class="text-4xl font-bold">
+        Restaurantes Disponibles
+      </h2>
+
+    </div>
+
+    <div id="restaurantsContainer"
+         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    </div>
+
+  </div>
+
+</section>
+
+<!-- RESERVATIONS -->
+<section id="reservations-section"
+         class="section max-w-7xl mx-auto px-6 py-14">
+
+  <h2 class="text-4xl font-bold mb-10">
+    Mis Reservas
+  </h2>
+
+  <div id="reservationsList"
+       class="space-y-6">
+  </div>
+
+</section>
+
+<!-- LOGIN MODAL -->
+<div id="loginModal"
+     class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+
+  <div class="bg-white rounded-3xl w-full max-w-md p-8 fade-in">
+
+    <div class="flex justify-between items-center mb-6">
+
+      <h2 class="text-3xl font-bold">
+        Iniciar Sesión
+      </h2>
+
+      <button onclick="closeModals()"
+              class="text-2xl text-gray-400 hover:text-black">
+        ×
+      </button>
+
+    </div>
+
+    <div class="space-y-5">
+
+      <div>
+        <label class="text-sm text-gray-600">
+          Correo electrónico
+        </label>
+
+        <input type="email"
+               id="loginEmail"
+               placeholder="correo@ejemplo.com"
+               class="w-full border rounded-2xl px-5 py-4 mt-2">
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600">
+          Contraseña
+        </label>
+
+        <input type="password"
+               id="loginPassword"
+               placeholder="••••••••"
+               class="w-full border rounded-2xl px-5 py-4 mt-2">
+      </div>
+
+      <button onclick="login()"
+              class="w-full bg-red-700 hover:bg-red-800 text-white py-4 rounded-2xl font-semibold text-lg">
+
+        Entrar
+
+      </button>
+
+      <div class="bg-gray-100 p-4 rounded-2xl text-sm text-gray-600">
+
+        <strong>Usuario prueba:</strong><br>
+        admin@reservamesa.com<br>
+        admin123
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+let currentUser = null;
+
+let reservations =
+JSON.parse(localStorage.getItem('reservations')) || [];
+
+const restaurants = [
+
+{
+  id:1,
+  name:"Mora de Castilla",
+  cuisine:"Tradicional Caucana",
+  rating:4.8,
+  price:"$$",
+  image:"https://images.unsplash.com/photo-1552566626-52f8b828add9?w=1200"
+},
+
+{
+  id:2,
+  name:"La Viña",
+  cuisine:"Colombiana Moderna",
+  rating:4.7,
+  price:"$$$",
+  image:"https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=1200"
+},
+
+{
+  id:3,
+  name:"Tequendama",
+  cuisine:"Típica Payanesa",
+  rating:4.6,
+  price:"$",
+  image:"https://images.unsplash.com/photo-1559339352-11d035aa65de?w=1200"
+}
+
+];
+
+function renderRestaurants(){
+
+  const container =
+  document.getElementById('restaurantsContainer');
+
+  container.innerHTML = restaurants.map(r=>`
+
+    <div class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300">
+
+      <img src="${r.image}"
+           class="w-full h-60 object-cover">
+
+      <div class="p-6">
+
+        <div class="flex justify-between items-start">
+
+          <div>
+
+            <h3 class="text-2xl font-bold">
+              ${r.name}
+            </h3>
+
+            <p class="text-gray-500 mt-1">
+              ${r.cuisine}
+            </p>
+
+          </div>
+
+          <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
+            ★ ${r.rating}
+          </span>
+
+        </div>
+
+        <div class="flex justify-between items-center mt-6">
+
+          <span class="font-bold text-lg">
+            ${r.price}
+          </span>
+
+          <button onclick="openRestaurant(${r.id})"
+                  class="bg-red-700 hover:bg-red-800 text-white px-5 py-3 rounded-2xl">
+
+            Ver Restaurante
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `).join('');
+
+}
+
+function openRestaurant(id){
+
+  const r = restaurants.find(x=>x.id===id);
+
+  document.body.insertAdjacentHTML('beforeend',`
+
+    <div id="restaurantModal"
+         class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+
+      <div class="bg-white rounded-3xl overflow-hidden max-w-2xl w-full fade-in">
+
+        <img src="${r.image}"
+             class="w-full h-72 object-cover">
+
+        <div class="p-8">
+
+          <div class="flex justify-between items-start mb-6">
+
+            <div>
+
+              <h2 class="text-4xl font-bold">
+                ${r.name}
+              </h2>
+
+              <p class="text-gray-500 mt-2">
+                ${r.cuisine}
+              </p>
+
             </div>
-            <button onclick="reserveRestaurant(${r.id})" 
-                    class="mt-6 w-full bg-red-700 text-white py-3.5 rounded-2xl hover:bg-red-800">
-              Reservar Mesa
+
+            <button onclick="closeRestaurantModal()"
+                    class="text-3xl text-gray-400 hover:text-black">
+              ×
             </button>
+
           </div>
-        </div>
-      `).join('');
-    }
 
-    function reserveRestaurant(id) {
-      const restaurant = restaurants.find(r => r.id === id);
-      const date = prompt("Ingrese la fecha (YYYY-MM-DD):", "2026-05-30");
-      if (date) {
-        reservations.push({
-          id: Date.now(),
-          restaurant: restaurant.name,
-          date: date,
-          time: "20:00",
-          guests: 4,
-          status: "Confirmada"
-        });
-        alert(`✅ Reserva realizada en ${restaurant.name}`);
-        showSection('reservations');
-      }
-    }
+          <div class="grid grid-cols-2 gap-4 mb-8">
 
-    function renderReservations() {
-      const container = document.getElementById('reservationsList');
-      if (reservations.length === 0) {
-        container.innerHTML = `<p class="text-center text-gray-500 py-12">Aún no tienes reservas</p>`;
-        return;
-      }
-      container.innerHTML = reservations.map(r => `
-        <div class="bg-white p-6 rounded-3xl shadow">
-          <div class="flex justify-between">
-            <h3 class="font-semibold">${r.restaurant}</h3>
-            <span class="text-green-600">${r.status}</span>
+            <div class="bg-gray-100 p-5 rounded-2xl">
+              ⭐ ${r.rating} estrellas
+            </div>
+
+            <div class="bg-gray-100 p-5 rounded-2xl">
+              💰 ${r.price}
+            </div>
+
           </div>
-          <p class="text-gray-600">Fecha: ${r.date} | Hora: ${r.time} | ${r.guests} personas</p>
+
+          <p class="text-gray-600 leading-relaxed mb-8">
+
+            Disfruta una experiencia gastronómica premium en uno de los mejores restaurantes de Popayán. Ambiente elegante, excelente atención y platos únicos.
+
+          </p>
+
+          <button onclick="openReservation(${r.id})"
+                  class="w-full bg-red-700 hover:bg-red-800 text-white py-4 rounded-2xl text-lg font-semibold">
+
+            Reservar Mesa
+
+          </button>
+
         </div>
-      `).join('');
-    }
 
-    function showSection(section) {
-      document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
-      document.getElementById(section + '-section').classList.remove('hidden');
-      
-      if (section === 'reservations') renderReservations();
-    }
+      </div>
 
-    function showLoginModal() {
-      document.getElementById('loginModal').classList.remove('hidden');
-    }
+    </div>
 
-    function closeModals() {
-      document.getElementById('loginModal').classList.add('hidden');
-    }
+  `);
 
-    function login() {
-      const email = document.getElementById('loginEmail').value;
-      const pass = document.getElementById('loginPassword').value;
-      
-      if (email && pass) {
-        alert("✅ Inicio de sesión exitoso (simulado)");
-        closeModals();
-      } else {
-        alert("Por favor ingresa tus datos");
-      }
-    }
+}
 
-    function showRegisterModal() {
-      alert("Registro de usuario en desarrollo.\n\nPuedes usar la cuenta de prueba:\nadmin@reservamesa.com / admin123");
-    }
+function closeRestaurantModal(){
 
-    // Inicializar
-    window.onload = () => {
-      renderRestaurants();
-      showSection('home');
+  document.getElementById('restaurantModal').remove();
+
+}
+
+function openReservation(id){
+
+  closeRestaurantModal();
+
+  const r = restaurants.find(x=>x.id===id);
+
+  document.body.insertAdjacentHTML('beforeend',`
+
+    <div id="reservationModal"
+         class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+
+      <div class="bg-white rounded-3xl w-full max-w-lg p-8 fade-in">
+
+        <div class="flex justify-between items-center mb-8">
+
+          <div>
+
+            <h2 class="text-3xl font-bold">
+              Reservar Mesa
+            </h2>
+
+            <p class="text-gray-500 mt-1">
+              ${r.name}
+            </p>
+
+          </div>
+
+          <button onclick="closeReservationModal()"
+                  class="text-3xl text-gray-400 hover:text-black">
+            ×
+          </button>
+
+        </div>
+
+        <div class="space-y-5">
+
+          <input type="date"
+                 id="reservationDate"
+                 class="w-full border rounded-2xl px-5 py-4">
+
+          <input type="time"
+                 id="reservationTime"
+                 class="w-full border rounded-2xl px-5 py-4">
+
+          <input type="number"
+                 id="reservationGuests"
+                 min="1"
+                 value="2"
+                 class="w-full border rounded-2xl px-5 py-4">
+
+          <textarea id="reservationComment"
+                    placeholder="Comentarios adicionales"
+                    class="w-full border rounded-2xl px-5 py-4 h-32"></textarea>
+
+          <button onclick="confirmReservation(${r.id})"
+                  class="w-full bg-red-700 hover:bg-red-800 text-white py-4 rounded-2xl font-semibold text-lg">
+
+            Confirmar Reserva
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `);
+
+}
+
+function closeReservationModal(){
+
+  document.getElementById('reservationModal').remove();
+
+}
+
+function confirmReservation(id){
+
+  const r = restaurants.find(x=>x.id===id);
+
+  const reservation = {
+
+    id:Date.now(),
+
+    restaurant:r.name,
+
+    date:document.getElementById('reservationDate').value,
+
+    time:document.getElementById('reservationTime').value,
+
+    guests:document.getElementById('reservationGuests').value,
+
+    comment:document.getElementById('reservationComment').value,
+
+    status:"Confirmada"
+
+  };
+
+  reservations.push(reservation);
+
+  localStorage.setItem(
+    'reservations',
+    JSON.stringify(reservations)
+  );
+
+  closeReservationModal();
+
+  showToast(
+    `Reserva confirmada en ${r.name}`
+  );
+
+  showSection('reservations');
+
+}
+
+function renderReservations(){
+
+  const container =
+  document.getElementById('reservationsList');
+
+  if(reservations.length===0){
+
+    container.innerHTML = `
+
+      <div class="bg-white rounded-3xl p-14 text-center shadow">
+
+        <div class="text-7xl mb-5">
+          🍽️
+        </div>
+
+        <h3 class="text-3xl font-bold mb-3">
+          No tienes reservas
+        </h3>
+
+        <p class="text-gray-500">
+          Haz tu primera reserva ahora
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+  container.innerHTML = reservations.map(r=>`
+
+    <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+
+      <div class="p-8">
+
+        <div class="flex justify-between items-center">
+
+          <div>
+
+            <h3 class="text-2xl font-bold">
+              ${r.restaurant}
+            </h3>
+
+            <p class="text-gray-500 mt-2">
+              ${r.date} • ${r.time}
+            </p>
+
+          </div>
+
+          <span class="bg-green-100 text-green-700 px-5 py-2 rounded-full">
+            ${r.status}
+          </span>
+
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mt-8">
+
+          <div class="bg-gray-100 p-5 rounded-2xl">
+            👥 ${r.guests} personas
+          </div>
+
+          <div class="bg-gray-100 p-5 rounded-2xl">
+            📍 Popayán
+          </div>
+
+        </div>
+
+        <div class="mt-5">
+
+          <div class="bg-gray-50 p-5 rounded-2xl text-gray-600">
+
+            ${r.comment || 'Sin comentarios adicionales'}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `).join('');
+
+}
+
+function showSection(section){
+
+  document.querySelectorAll('.section')
+  .forEach(s=>s.classList.remove('active'));
+
+  document.getElementById(section+'-section')
+  .classList.add('active');
+
+  document.querySelectorAll('.nav-btn')
+  .forEach(btn=>btn.classList.remove('nav-active'));
+
+  if(section==='home'){
+    document.querySelectorAll('.nav-btn')[0]
+    .classList.add('nav-active');
+  }
+
+  if(section==='reservations'){
+    document.querySelectorAll('.nav-btn')[1]
+    .classList.add('nav-active');
+
+    renderReservations();
+  }
+
+}
+
+function showLoginModal(){
+
+  document.getElementById('loginModal')
+  .classList.remove('hidden');
+
+}
+
+function closeModals(){
+
+  document.getElementById('loginModal')
+  .classList.add('hidden');
+
+}
+
+function login(){
+
+  const email =
+  document.getElementById('loginEmail').value;
+
+  const pass =
+  document.getElementById('loginPassword').value;
+
+  if(
+    email==="admin@reservamesa.com" &&
+    pass==="admin123"
+  ){
+
+    currentUser = {
+      email
     };
-  </script>
+
+    localStorage.setItem(
+      'currentUser',
+      JSON.stringify(currentUser)
+    );
+
+    closeModals();
+
+    showToast(
+      'Inicio de sesión exitoso'
+    );
+
+  }else{
+
+    showToast(
+      'Correo o contraseña incorrectos',
+      true
+    );
+
+  }
+
+}
+
+function showToast(message,error=false){
+
+  const toast =
+  document.createElement('div');
+
+  toast.className = `
+    toast
+    fixed
+    top-6
+    right-6
+    z-50
+    px-6
+    py-4
+    rounded-2xl
+    text-white
+    shadow-2xl
+    ${error ? 'bg-red-600' : 'bg-green-600'}
+  `;
+
+  toast.innerHTML = `
+    <div class="flex items-center gap-3">
+      <span class="text-2xl">
+        ${error ? '❌' : '✅'}
+      </span>
+
+      <span>${message}</span>
+    </div>
+  `;
+
+  document.body.appendChild(toast);
+
+  setTimeout(()=>{
+    toast.remove();
+  },3000);
+
+}
+
+window.onload = ()=>{
+
+  renderRestaurants();
+
+  showSection('home');
+
+};
+
+</script>
+
 </body>
 </html>
