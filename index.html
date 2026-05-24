@@ -7,14 +7,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-    }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; }
     .hero {
-      background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34b4?w=1920') center/cover no-repeat;
-    }
-    .card-hover {
-      transition: all 0.3s ease;
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                  url('https://images.unsplash.com/photo-1517248135467-4c7edcad34b4?w=1920') center/cover no-repeat;
     }
     .card-hover:hover {
       transform: translateY(-12px);
@@ -38,14 +34,14 @@
       </div>
       
       <nav class="flex items-center gap-8 text-sm font-medium">
-        <a href="#" class="text-gray-700 hover:text-red-700 transition-colors">Restaurantes</a>
-        <a href="#" class="text-gray-700 hover:text-red-700 transition-colors">Cómo funciona</a>
-        <a href="#" class="text-gray-700 hover:text-red-700 transition-colors">Mis Reservas</a>
-        <button onclick="document.getElementById('login-modal').classList.remove('hidden')"
+        <a href="#" class="text-gray-700 hover:text-red-700">Restaurantes</a>
+        <a href="#" class="text-gray-700 hover:text-red-700">Mis Reservas</a>
+        <button onclick="showLoginModal()" 
                 class="px-6 py-2.5 bg-white border border-gray-300 rounded-xl hover:bg-gray-50">
           Iniciar Sesión
         </button>
-        <button class="px-6 py-2.5 bg-red-700 text-white rounded-xl hover:bg-red-800 transition-colors">
+        <button onclick="alert('Registro en desarrollo')" 
+                class="px-6 py-2.5 bg-red-700 text-white rounded-xl hover:bg-red-800">
           Registrarse
         </button>
       </nav>
@@ -55,18 +51,15 @@
   <!-- HERO -->
   <section class="hero h-screen flex items-center text-white">
     <div class="max-w-4xl mx-auto px-6 text-center">
-      <h2 class="text-6xl font-bold mb-6 leading-tight">
-        Reserva tu mesa<br>en los mejores restaurantes
-      </h2>
-      <p class="text-xl mb-10 text-gray-200">
-        Encuentra y reserva en los mejores lugares de Popayán en segundos
-      </p>
+      <h2 class="text-6xl font-bold mb-6">Reserva tu mesa en los mejores restaurantes</h2>
+      <p class="text-xl mb-10 text-gray-200">Popayán a un clic</p>
+      
       <div class="max-w-md mx-auto bg-white rounded-3xl p-2 shadow-2xl">
         <div class="flex bg-gray-100 rounded-3xl p-1">
-          <input type="text" id="search" 
+          <input type="text" id="searchInput" 
                  class="flex-1 bg-transparent px-6 py-4 outline-none text-gray-800 placeholder-gray-500 text-lg"
-                 placeholder="Busca un restaurante o tipo de comida...">
-          <button onclick="alert('Buscando... (Funcionalidad en desarrollo)')" 
+                 placeholder="Busca restaurante o comida...">
+          <button onclick="searchRestaurants()" 
                   class="bg-red-700 text-white px-10 rounded-3xl font-medium hover:bg-red-800">
             Buscar
           </button>
@@ -75,65 +68,138 @@
     </div>
   </section>
 
-  <!-- RESTAURANTES DESTACADOS -->
+  <!-- RESTAURANTES -->
   <section class="max-w-7xl mx-auto px-6 py-16">
-    <h2 class="text-4xl font-bold text-center mb-4">Restaurantes Destacados</h2>
-    <p class="text-center text-gray-600 mb-12">Elige entre los mejores lugares de Popayán</p>
+    <h2 class="text-4xl font-bold text-center mb-4">Restaurantes Disponibles</h2>
+    <p class="text-center text-gray-600 mb-12">Haz clic en "Reservar" para ver horarios disponibles</p>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="restaurants">
-      <!-- Las cards se generan con JavaScript abajo -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="restaurantsContainer">
+      <!-- Se llenan con JavaScript -->
     </div>
   </section>
 
+  <!-- MODAL DE RESERVA -->
+  <div id="bookingModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+    <div class="bg-white rounded-3xl max-w-md w-full mx-4 p-8">
+      <h3 class="text-2xl font-bold mb-6" id="modalRestaurantName">Reservar en ...</h3>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">Fecha</label>
+          <input type="date" id="modalDate" class="w-full border rounded-xl px-4 py-3">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Hora</label>
+          <select id="modalTime" class="w-full border rounded-xl px-4 py-3">
+            <option>12:00</option>
+            <option>13:00</option>
+            <option>14:30</option>
+            <option>19:00</option>
+            <option>20:30</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Número de personas</label>
+          <select id="modalGuests" class="w-full border rounded-xl px-4 py-3">
+            <option>2 personas</option>
+            <option>3 personas</option>
+            <option>4 personas</option>
+            <option>5 personas</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex gap-3 mt-8">
+        <button onclick="closeModal()" 
+                class="flex-1 py-4 border border-gray-300 rounded-2xl font-medium">
+          Cancelar
+        </button>
+        <button onclick="makeReservation()" 
+                class="flex-1 py-4 bg-red-700 text-white rounded-2xl font-medium hover:bg-red-800">
+          Confirmar Reserva
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const restaurants = [
-      {
-        name: "Mora de Castilla",
-        cuisine: "Tradicional Caucana",
-        rating: 4.8,
-        price: "$$",
-        image: "https://images.unsplash.com/photo-1569072412439-e8cd5d6f22df?w=600"
-      },
-      {
-        name: "La Viña",
-        cuisine: "Colombiana Contemporánea",
-        rating: 4.7,
-        price: "$$$",
-        image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34b4?w=600"
-      },
-      {
-        name: "Tequendama",
-        cuisine: "Típica del Cauca",
-        rating: 4.6,
-        price: "$",
-        image: "https://images.unsplash.com/photo-1621986233880-bba6cc64269e?w=600"
-      }
+      { id: 1, name: "Mora de Castilla", cuisine: "Tradicional Caucana", rating: 4.8, price: "$$", image: "https://images.unsplash.com/photo-1569072412439-e8cd5d6f22df?w=600" },
+      { id: 2, name: "La Viña", cuisine: "Colombiana Contemporánea", rating: 4.7, price: "$$$", image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34b4?w=600" },
+      { id: 3, name: "Tequendama", cuisine: "Típica del Cauca", rating: 4.6, price: "$", image: "https://images.unsplash.com/photo-1621986233880-bba6cc64269e?w=600" },
+      { id: 4, name: "El Balcón de los Arrieros", cuisine: "Paisas y Antioqueña", rating: 4.5, price: "$$", image: "https://images.unsplash.com/photo-1723693407562-bb4fcae76797?w=600" }
     ];
 
-    function renderRestaurants() {
-      const container = document.getElementById('restaurants');
-      container.innerHTML = restaurants.map(r => `
-        <div class="bg-white rounded-3xl overflow-hidden shadow-lg card-hover cursor-pointer" onclick="alert('Abriendo detalle de ${r.name}...')">
+    function renderRestaurants(filteredRestaurants = restaurants) {
+      const container = document.getElementById('restaurantsContainer');
+      container.innerHTML = filteredRestaurants.map(r => `
+        <div class="bg-white rounded-3xl overflow-hidden shadow-lg card-hover">
           <img src="${r.image}" class="w-full h-56 object-cover">
           <div class="p-6">
-            <div class="flex justify-between items-start mb-3">
+            <div class="flex justify-between">
               <h3 class="text-2xl font-semibold">${r.name}</h3>
-              <span class="text-green-600 font-medium">${r.price}</span>
+              <span class="text-green-600">${r.price}</span>
             </div>
-            <p class="text-gray-600 mb-4">${r.cuisine}</p>
-            <div class="flex items-center gap-2 text-yellow-500">
-              ★★★★☆ <span class="text-gray-600 text-sm ml-1">${r.rating}</span>
+            <p class="text-gray-600 mt-1">${r.cuisine}</p>
+            <div class="flex items-center gap-1 mt-2 text-yellow-500">
+              ★★★★☆ <span class="text-gray-600 text-sm">${r.rating}</span>
             </div>
-            <button class="mt-6 w-full bg-gray-900 text-white py-4 rounded-2xl font-medium hover:bg-red-700 transition-colors">
-              Ver Disponibilidad
+            <button onclick="openBookingModal(${r.id})" 
+                    class="mt-6 w-full bg-gray-900 hover:bg-red-700 text-white py-4 rounded-2xl font-medium transition-colors">
+              Reservar Mesa
             </button>
           </div>
         </div>
       `).join('');
     }
 
-    // Renderizar al cargar
-    window.onload = renderRestaurants;
+    // Modal de Reserva
+    let currentRestaurant = null;
+
+    function openBookingModal(id) {
+      currentRestaurant = restaurants.find(r => r.id === id);
+      if (currentRestaurant) {
+        document.getElementById('modalRestaurantName').textContent = `Reservar en ${currentRestaurant.name}`;
+        document.getElementById('bookingModal').classList.remove('hidden');
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('bookingModal').classList.add('hidden');
+    }
+
+    function makeReservation() {
+      const date = document.getElementById('modalDate').value;
+      const time = document.getElementById('modalTime').value;
+      
+      if (!date) {
+        alert("Por favor selecciona una fecha");
+        return;
+      }
+
+      alert(`✅ Reserva confirmada en ${currentRestaurant.name}\nFecha: ${date}\nHora: ${time}\n\n¡Gracias por reservar!`);
+      closeModal();
+    }
+
+    // Buscador
+    function searchRestaurants() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = restaurants.filter(r => 
+        r.name.toLowerCase().includes(searchTerm) || 
+        r.cuisine.toLowerCase().includes(searchTerm)
+      );
+      renderRestaurants(filtered);
+    }
+
+    // Modal de Login (simple)
+    function showLoginModal() {
+      alert("🔐 Pantalla de inicio de sesión en desarrollo.\n\nUsuario de prueba:\nadmin@reservamesa.com\nContraseña: admin123");
+    }
+
+    // Inicializar
+    window.onload = () => {
+      renderRestaurants();
+    };
   </script>
 
 </body>
